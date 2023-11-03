@@ -2,6 +2,7 @@ from dataclasses import dataclass, astuple
 from collections import deque
 from typing import Iterator, Self
 
+from datetime import date
 
 @dataclass(slots=True)
 class WeightedEdge[T]:
@@ -119,9 +120,9 @@ class WeightedDigraph[T]:
 
 
 class dfsIterator[T]:
-    def __init__(self, graph: WeightedDigraph[T], v: T) -> None:
+    def __init__(self, graph: WeightedDigraph[T], start: T) -> None:
         self.__marked = [False] * graph.vertex_count
-        self.__stack = deque([NodeVisitor[T](None, v)])
+        self.__stack = deque([NodeVisitor[T](None, start)])
         self.__graph = graph
 
     def __iter__(self) -> Self:
@@ -148,6 +149,27 @@ class dfsIterator[T]:
 
 
 def main() -> None:
+    # date graph
+    igraph = WeightedDigraph[date]()
+
+    d1, d2, d3 = date.fromisocalendar(1919, 2, 1), date.fromisocalendar(1399, 2, 1), date.fromisocalendar(1499, 2, 1)
+    igraph.add_vertex(d1)
+    igraph.add_vertex(d2)
+    igraph.add_vertex(d3)
+
+    igraph.add_edge(d1, d2, 0)
+    igraph.add_edge(d2, d3, 0)
+    igraph.add_edge(d3, d1, 0)
+
+    for node_visitor in dfsIterator(igraph, d1):
+        ancestor, current = node_visitor
+
+        if ancestor is None:
+            print(f"Starting from {current}")
+        else:
+            print(f"{ancestor} visited {current}")
+
+    # str graph
     graph = WeightedDigraph[str]()
 
     graph.add_vertex("a")
@@ -158,6 +180,7 @@ def main() -> None:
     graph.add_edge("a", "b", 1)
     graph.add_edge("a", "c", 5)
     graph.add_edge("b", "d", 5)
+
     graph.add_edge("d", "a", 5)
 
     print(f"Graph vertices: {graph.vertices}")
@@ -170,6 +193,7 @@ def main() -> None:
             print(f"Starting from {current}")
         else:
             print(f"{ancestor} visited {current}")
+
 
 
 if __name__ == "__main__":
