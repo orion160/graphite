@@ -1,0 +1,26 @@
+{
+    "name": "Graphite Devcontainer",
+    "build": {
+      "dockerfile": "Dockerfile"
+    },
+    "workspaceMount": "source=${localWorkspaceFolder},target=/workspace,type=bind,consistency=cached",
+    "workspaceFolder": "/workspace",
+    "customizations": {
+      "vscode": {
+        "settings": {
+          "editor.renderWhitespace": "boundary",
+          "editor.wordWrap": "off"
+        },
+        "extensions": [
+          "VisualStudioExptTeam.vscodeintellicode",
+          "eamodio.gitlens",
+          "github.vscode-pull-request-github",
+          "davidanson.vscode-markdownlint",
+          "esbenp.prettier-vscode",
+          "ms-python.python",
+          "ms-python.vscode-pylance",
+          "charliermarsh.ruff"
+        ]
+      }
+    }
+  }
